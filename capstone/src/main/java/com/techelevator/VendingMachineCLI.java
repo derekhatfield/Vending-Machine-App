@@ -1,6 +1,7 @@
 package com.techelevator;
 
 import com.techelevator.view.Item;
+import com.techelevator.view.Machine;
 import com.techelevator.view.Menu;
 
 import java.math.BigDecimal;
@@ -35,6 +36,7 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				runPurchase();
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
+				System.out.println("");
 				System.out.println("Thanks for using the Vend-O-Matic 9000!");
 				System.exit(1);
 			}
@@ -46,25 +48,31 @@ public class VendingMachineCLI {
 		boolean purchaseLoop = true;
 		Scanner userInput = new Scanner(System.in);
 		while (purchaseLoop) {
-
-			System.out.println("Current money provided: $" + vendOMatic9000.getCurrentBalance());
+			System.out.println("");
+			System.out.println("Remaining Funds: $" + vendOMatic9000.getCurrentBalance());
 			String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
 
 			if (choice.equals(PURCHASE_MENU_OPTION_FEED_MONEY)) {
 				System.out.print("How much money would you like to add? >>> ");
 				BigDecimal moneyToAdd = userInput.nextBigDecimal();
 				vendOMatic9000.feedMoney(moneyToAdd);
+				vendOMatic9000.log("FEED MONEY", moneyToAdd, vendOMatic9000.getCurrentBalance());
 			} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 
 				vendOMatic9000.printPurchasableInventory();
 				System.out.print("Please select an item by slot number >>> ");
-				String userSlotSelection = userInput.next();
+				String userSlotSelection = userInput.next().toUpperCase();
 				Item itemToDispense = vendOMatic9000.getVendableItemMap().get(userSlotSelection);
 
 					if (vendOMatic9000.getVendableItemMap().containsKey(userSlotSelection)) {
+						if (vendOMatic9000.getCurrentBalance().compareTo(itemToDispense.getPrice()) == -1) {
+							System.out.println("You do not have enough money!");
+							continue;
+						}
 						if (itemToDispense.getStock() > 0) {
 							vendOMatic9000.getVendableItemMap().get(userSlotSelection).vendItem(itemToDispense);
 							vendOMatic9000.dispenseItem(itemToDispense);
+							vendOMatic9000.log(itemToDispense.getName(), itemToDispense.getPrice(), vendOMatic9000.getCurrentBalance());
 						} else {
 							System.out.println("Sorry, that item is out of stock.");
 						}
@@ -73,6 +81,7 @@ public class VendingMachineCLI {
 					}
 
 			} else if (choice.equals(PURCHASE_MENU_OPTION_FINISH_TRANSACTION)) {
+				vendOMatic9000.log("GIVE CHANGE", vendOMatic9000.getCurrentBalance(), vendOMatic9000.DEFAULT_STARTING_BALANCE);
 				vendOMatic9000.cashOut();
 				break;
 			}
@@ -82,15 +91,9 @@ public class VendingMachineCLI {
 
 
 	public static void main(String[] args) {
-
 		vendOMatic9000.stock(vendOMatic9000.getVendableItemMap());
-
-
-
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);
 		cli.runMain();
-
-
 	}
 }
