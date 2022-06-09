@@ -1,49 +1,44 @@
 package com.techelevator.view;
 
-public class Item implements Vendable {
+import java.math.BigDecimal;
+
+public class Item {
 
     private String slotID;
     private String name;
-    private double price;
+    private BigDecimal price;
     private String message;
     private int stock;
 
-    public Item(String slotID, String name, double price, String message) {
+    public Item(String slotID, String name, BigDecimal price, String message) {
         this.slotID = slotID;
         this.name = name;
         this.price = price;
-        this.stock = 5;
         this.message = message;
-
+        this.stock = 5;
     }
 
-    @Override
     public String getSlotID() {
         return this.slotID;
     }
 
-    @Override
     public String getName() {
         return this.name;
     }
 
-    @Override
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return this.price;
     }
 
-    @Override
     public String getMessage() {
         return this.message;
     }
 
-    @Override
     public int getStock() {
         return this.stock;
     }
 
-    @Override
-    public void vendItem() {
-
+    public void vendItem(Item itemToVend) {
+        this.stock--;
     }
 }
