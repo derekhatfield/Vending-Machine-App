@@ -34,7 +34,7 @@ public final class Machine {
     public Machine() {
         this.currentBalance = new BigDecimal("0.0");
         this.runningSalesTotal = new BigDecimal("0.0");
-        this.vendableItemMap = new HashMap<>();
+        this.vendableItemMap = new TreeMap<>();
     }
 
     public void stock(Map<String, Item> vendableItemMap) {
