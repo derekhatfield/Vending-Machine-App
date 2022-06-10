@@ -7,14 +7,14 @@ public class Item {
     private String slotID;
     private String name;
     private BigDecimal price;
-    private String message;
+    private String message = "";
     private int stock;
+    private int runningTotal;
 
-    public Item(String slotID, String name, BigDecimal price, String message) {
+    public Item(String slotID, String name, BigDecimal price) {
         this.slotID = slotID;
         this.name = name;
         this.price = price;
-        this.message = message;
         this.stock = 5;
     }
 
@@ -38,7 +38,12 @@ public class Item {
         return this.stock;
     }
 
+    public int getRunningTotal() {
+        return runningTotal;
+    }
+
     public void vendItem(Item itemToVend) {
         this.stock--;
+        this.runningTotal++;
     }
 }

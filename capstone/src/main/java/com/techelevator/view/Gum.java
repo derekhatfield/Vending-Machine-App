@@ -5,7 +5,15 @@ import java.math.BigDecimal;
 public class Gum extends Item {
 
 
-    public Gum(String slotID, String name, BigDecimal price, String message) {
-        super(slotID, name, price, message);
+    private String message = "CHEW CHEW, YUM!";
+
+    public Gum(String slotID, String name, BigDecimal price) {
+        super(slotID, name, price);
     }
+
+    @Override
+    public String getMessage() {
+        return this.message;
+    }
+
 }

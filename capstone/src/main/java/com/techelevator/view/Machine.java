@@ -2,10 +2,7 @@ package com.techelevator.view;
 
 import com.techelevator.view.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +19,18 @@ public class Machine {
     private final BigDecimal DIME_VALUE = new BigDecimal("0.10");
     private final BigDecimal NICKEL_VALUE = new BigDecimal("0.05");
 
+    public Map<String, Item> getVendableItemMap() {
+        return vendableItemMap;
+    }
+
+    public BigDecimal getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public BigDecimal getRunningSalesTotal() {
+        return runningSalesTotal;
+    }
+
     public Machine() {
         this.currentBalance = new BigDecimal("0.0");
         this.runningSalesTotal = new BigDecimal("0.0");
@@ -34,25 +43,21 @@ public class Machine {
             while (stockScanner.hasNextLine()) {
                 String[] stockInputArray = stockScanner.nextLine().split("\\|");
                 if (stockInputArray[3].equals("Candy")) {
-                    //double itemPriceDouble = Double.parseDouble((stockInputArray[2]));
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
-                    vendableItemMap.put(stockInputArray[0], new Candy(stockInputArray[0], stockInputArray[1], itemPrice, "MUNCH MUNCH, YUM!"));
+                    vendableItemMap.put(stockInputArray[0], new Candy(stockInputArray[0], stockInputArray[1], itemPrice));
 
                 }
                 else if (stockInputArray[3].equals("Chip")) {
-                    //double itemPriceDouble = Double.parseDouble((stockInputArray[2]));
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
-                    vendableItemMap.put(stockInputArray[0], new Chip(stockInputArray[0], stockInputArray[1], itemPrice, "CRUNCH CRUNCH, YUM!"));
+                    vendableItemMap.put(stockInputArray[0], new Chip(stockInputArray[0], stockInputArray[1], itemPrice));
                 }
                 else if (stockInputArray[3].equals("Drink")) {
-                    //double itemPriceDouble = Double.parseDouble((stockInputArray[2]));
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
-                    vendableItemMap.put(stockInputArray[0], new Drink(stockInputArray[0], stockInputArray[1], itemPrice, "GLUG GLUG, YUM!"));
+                    vendableItemMap.put(stockInputArray[0], new Drink(stockInputArray[0], stockInputArray[1], itemPrice));
                 }
                 else if (stockInputArray[3].equals("Gum")) {
-                    //double itemPriceDouble = Double.parseDouble((stockInputArray[2]));
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
-                    vendableItemMap.put(stockInputArray[0], new Gum(stockInputArray[0], stockInputArray[1], itemPrice, "CHEW CHEW, YUM!"));
+                    vendableItemMap.put(stockInputArray[0], new Gum(stockInputArray[0], stockInputArray[1], itemPrice));
                 }
             }
 
@@ -108,6 +113,7 @@ public class Machine {
         System.out.println("Your item: " + itemToDispense.getName() + " | $" + itemToDispense.getPrice() + " | Balance remaining: $" + this.currentBalance);
         System.out.println("");
         System.out.println(itemToDispense.getMessage());
+        this.runningSalesTotal = this.runningSalesTotal.add(itemToDispense.getPrice());
     }
 
     public void log(String description, BigDecimal firstNumber, BigDecimal secondNumber) {
@@ -121,14 +127,32 @@ public class Machine {
         } catch (FileNotFoundException e) {
             System.out.println("I cannot find that file.");
         }
-
     }
 
-    public Map<String, Item> getVendableItemMap() {
-        return vendableItemMap;
+    public void salesLog() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH-mm-ss_a");
+        LocalDateTime now = LocalDateTime.now();
+        String logStamper = now.format(formatter);
+
+        File salesLogDirectory = new File("C:\\Users\\Student\\workspace\\mod-1-capstone-pair-team-3\\capstone\\Sales_Logs");
+        String salesLogFileName = logStamper + "_Report.txt";
+        File salesLogFile = new File(salesLogDirectory, salesLogFileName);
+        try {
+            salesLogFile.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Sorry, that file couldn't be created.");
+        }
+
+        try (PrintWriter logPrinter = new PrintWriter(salesLogFile)) {
+            for (Map.Entry<String, Item> itemEntry : vendableItemMap.entrySet()) {
+                logPrinter.println(itemEntry.getValue().getName() + "|" + itemEntry.getValue().getRunningTotal());
+            }
+            logPrinter.println("");
+            logPrinter.println("** TOTAL SALES ** $" + this.runningSalesTotal);
+        } catch (FileNotFoundException e) {
+            System.out.println("Sorry, I cannot find that file.");
+        }
     }
 
-    public BigDecimal getCurrentBalance() {
-        return currentBalance;
-    }
+
 }
