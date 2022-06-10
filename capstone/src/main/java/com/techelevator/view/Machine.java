@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class Machine {
+public final class Machine {
 
     private BigDecimal currentBalance;
     private BigDecimal runningSalesTotal;
@@ -39,6 +39,7 @@ public class Machine {
 
     public void stock(Map<String, Item> vendableItemMap) {
         File stockFile = new File("C:\\Users\\Student\\workspace\\mod-1-capstone-pair-team-3\\capstone\\vendingmachine.csv");
+
         try (Scanner stockScanner = new Scanner(stockFile)) {
             while (stockScanner.hasNextLine()) {
                 String[] stockInputArray = stockScanner.nextLine().split("\\|");
@@ -50,10 +51,12 @@ public class Machine {
                 else if (stockInputArray[3].equals("Chip")) {
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
                     vendableItemMap.put(stockInputArray[0], new Chip(stockInputArray[0], stockInputArray[1], itemPrice));
+
                 }
                 else if (stockInputArray[3].equals("Drink")) {
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
                     vendableItemMap.put(stockInputArray[0], new Drink(stockInputArray[0], stockInputArray[1], itemPrice));
+
                 }
                 else if (stockInputArray[3].equals("Gum")) {
                     BigDecimal itemPrice = new BigDecimal(stockInputArray[2]);
@@ -68,12 +71,20 @@ public class Machine {
 
     public void printInventory() {
         System.out.println("");
+        System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*");
+        System.out.println("   Our Current Selections:  ");
+        System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*");
+        System.out.println("");
         for (Map.Entry<String, Item> item : vendableItemMap.entrySet()) {
             System.out.println(item.getValue().getName() + " | Stock: " + item.getValue().getStock());
         }
     }
 
     public void printPurchasableInventory() {
+        System.out.println("");
+        System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*");
+        System.out.println("            ~MENU~          ");
+        System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*");
         System.out.println("");
         for (Map.Entry<String, Item> item : vendableItemMap.entrySet()) {
             System.out.println(item.getValue().getSlotID() + " | " + item.getValue().getName() + " | " + item.getValue().getPrice() + " | " + item.getValue().getStock());
@@ -88,6 +99,7 @@ public class Machine {
     public void cashOut () {
         System.out.println("");
         System.out.println("Your change is: $" + this.currentBalance);
+
         int numberOfQuarters = 0;
         int numberOfDimes = 0;
         int numberOfNickels = 0;
@@ -136,7 +148,9 @@ public class Machine {
 
         File salesLogDirectory = new File("C:\\Users\\Student\\workspace\\mod-1-capstone-pair-team-3\\capstone\\Sales_Logs");
         String salesLogFileName = logStamper + "_Report.txt";
+        salesLogDirectory.mkdir();
         File salesLogFile = new File(salesLogDirectory, salesLogFileName);
+
         try {
             salesLogFile.createNewFile();
         } catch (IOException e) {
@@ -153,6 +167,4 @@ public class Machine {
             System.out.println("Sorry, I cannot find that file.");
         }
     }
-
-
 }

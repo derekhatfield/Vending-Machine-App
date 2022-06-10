@@ -2,7 +2,7 @@ package com.techelevator.view;
 
 import java.math.BigDecimal;
 
-public class Item {
+public abstract class Item {
 
     private String slotID;
     private String name;

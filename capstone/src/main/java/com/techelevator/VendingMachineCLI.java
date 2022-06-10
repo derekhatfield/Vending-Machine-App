@@ -28,8 +28,7 @@ public class VendingMachineCLI {
 	}
 
 	public void runMain() {
-		boolean mainLoop = true;
-		while (mainLoop) {
+		while (true) {
 			String choice = (String) menu.getChoiceFromOptions(MAIN_MENU_OPTIONS);
 
 			if (choice.equals(MAIN_MENU_OPTION_DISPLAY_ITEMS)) {
@@ -37,20 +36,18 @@ public class VendingMachineCLI {
 			} else if (choice.equals(MAIN_MENU_OPTION_PURCHASE)) {
 				runPurchase();
 			} else if (choice.equals(MAIN_MENU_OPTION_EXIT)) {
-				System.out.println("");
-				System.out.println("Thanks for using the Vend-O-Matic 9000!");
+				printExitBanner();
 				System.exit(1);
 			} else if (choice.equals(MAIN_MENU_OPTION_HIDDEN_SALES_REPORT)) {
 				vendOMatic9000.salesLog();
+				System.out.println("Sales Report Generated");
 			}
 		}
 	}
 
 	public void runPurchase() {
-
-		boolean purchaseLoop = true;
 		Scanner userInput = new Scanner(System.in);
-		while (purchaseLoop) {
+		while (true) {
 			System.out.println("");
 			System.out.println("Remaining Funds: $" + vendOMatic9000.getCurrentBalance());
 			String choice = (String) menu.getChoiceFromOptions(PURCHASE_MENU_OPTIONS);
@@ -60,6 +57,7 @@ public class VendingMachineCLI {
 				BigDecimal moneyToAdd = userInput.nextBigDecimal();
 				vendOMatic9000.feedMoney(moneyToAdd);
 				vendOMatic9000.log("FEED MONEY", moneyToAdd, vendOMatic9000.getCurrentBalance());
+
 			} else if (choice.equals(PURCHASE_MENU_OPTION_SELECT_PRODUCT)) {
 
 				vendOMatic9000.printPurchasableInventory();
@@ -91,9 +89,27 @@ public class VendingMachineCLI {
 		}
 	}
 
+	public static void printEntryBanner() {
+		System.out.println("");
+		System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*$");
+		System.out.println("           Welcome To        ");
+		System.out.println("       VEND-O-MATIC 9000     ");
+		System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*$");
+		System.out.println("");
+	}
 
+	public static void printExitBanner() {
+		System.out.println("");
+		System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*$");
+		System.out.println("           Thank You         ");
+		System.out.println("           For Using         ");
+		System.out.println("       VEND-O-MATIC 9000     ");
+		System.out.println("$*$*$*$*$*$*$*$*$*$*$*$*$*$*$");
+		System.out.println("");
+	}
 
 	public static void main(String[] args) {
+		printEntryBanner();
 		vendOMatic9000.stock(vendOMatic9000.getVendableItemMap());
 		Menu menu = new Menu(System.in, System.out);
 		VendingMachineCLI cli = new VendingMachineCLI(menu);

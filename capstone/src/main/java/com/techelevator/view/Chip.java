@@ -2,7 +2,7 @@ package com.techelevator.view;
 
 import java.math.BigDecimal;
 
-public class Chip extends Item {
+public final class Chip extends Item {
 
     private String message = "CRUNCH CRUNCH, YUM!";
 
@@ -14,5 +14,4 @@ public class Chip extends Item {
     public String getMessage() {
         return this.message;
     }
-
 }

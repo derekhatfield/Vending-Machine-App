@@ -2,8 +2,7 @@ package com.techelevator.view;
 
 import java.math.BigDecimal;
 
-public class Gum extends Item {
-
+public final class Gum extends Item {
 
     private String message = "CHEW CHEW, YUM!";
 
@@ -15,5 +14,4 @@ public class Gum extends Item {
     public String getMessage() {
         return this.message;
     }
-
 }

@@ -2,7 +2,7 @@ package com.techelevator.view;
 
 import java.math.BigDecimal;
 
-public class Drink extends Item{
+public final class Drink extends Item{
 
     private String message = "GLUG GLUG, YUM!";
 
@@ -14,5 +14,4 @@ public class Drink extends Item{
     public String getMessage() {
         return this.message;
     }
-
 }
