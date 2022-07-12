@@ -1,4 +1,4 @@
-This project was our first capstone project for Tech Elevator. This project was worked on alongside a partner.
+This project was our first capstone project for Tech Elevator. This project was worked on alongside a partner. All application requirements given by Tech Elevator work as intended along with the optional sales report functionality.
 
 ## Module 1 Capstone - Vending Machine Software
 
