@@ -1,3 +1,5 @@
+This project was our first capstone project for Tech Elevator. This project was worked on alongside a partner.
+
 ## Module 1 Capstone - Vending Machine Software
 
 You're developing an application for the newest vending machine distributor,
